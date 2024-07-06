@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Website</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f7f9fc;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #444;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .form-group button {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: #444;
+            color: #fff;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .form-group button:hover {
+            background-color: #333;
+        }
+        .form-switch {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .client-content {
+            display: none;
+        }
+        .client-content.active {
+            display: block;
+        }
+        .client-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .client-header h2 {
+            margin: 0;
+        }
+        .client-form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .client-form .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+        .client-form .form-group input, .client-form .form-group textarea {
+            flex: 1;
+        }
+        .client-form .form-group input[type="file"] {
+            padding: 0;
+        }
+        .notes {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Client Management</h1>
+    <div class="container">
+        <div id="signUpForm" class="form-group active">
+            <h2>Sign Up</h2>
+            <label for="signUpName">Name</label>
+            <input type="text" id="signUpName">
+            <label for="signUpPassword">Password</label>
+            <input type="password" id="signUpPassword">
+            <button onclick="signUp()">Sign Up</button>
+            <div class="form-switch">
+                <p>Already have an account? <a href="javascript:void(0)" onclick="toggleForms()">Sign In</a></p>
+            </div>
+        </div>
+        <div id="signInForm" class="form-group">
+            <h2>Sign In</h2>
+            <label for="signInName">Name</label>
+            <input type="text" id="signInName">
+            <label for="signInPassword">Password</label>
+            <input type="password" id="signInPassword">
+            <button onclick="signIn()">Sign In</button>
+            <div class="form-switch">
+                <p>Don't have an account? <a href="javascript:void(0)" onclick="toggleForms()">Sign Up</a></p>
+            </div>
+        </div>
+        <div id="clientContent" class="client-content">
+            <div class="client-header">
+                <h2>Welcome, <span id="clientName"></span></h2>
+            </div>
+            <form class="client-form">
+                <div class="form-group">
+                    <label for="weight">Weekly Weight</label>
+                    <input type="number" id="weight" placeholder="Enter your weight">
+                </div>
+                <div class="form-group">
+                    <label for="date">Date</label>
+                    <input type="date" id="date">
+                </div>
+                <div class="form-group">
+                    <label for="photo">Upload Photo</label>
+                    <input type="file" id="photo" accept="image/*">
+                </div>
+                <div class="notes">
+                    <h3>Notes from Trainer</h3>
+                    <p id="clientNotes"></p>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function toggleForms() {
+            document.getElementById('signUpForm').classList.toggle('active');
+            document.getElementById('signInForm').classList.toggle('active');
+        }
+
+        async function signUp() {
+            const name = document.getElementById('signUpName').value;
+            const password = document.getElementById('signUpPassword').value;
+
+            const response = await fetch('/api/auth/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ name, password })
+            });
+
+            if (response.ok) {
+                alert('User registered');
+                toggleForms();
+            } else {
+                alert('Error registering user');
+            }
+        }
+
+        async function signIn() {
+            const name = document.getElementById('signInName').value;
+            const password = document.getElementById('signInPassword').value;
+
+            const response = await fetch('/api/auth/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ name, password })
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                localStorage.setItem('token', data.token);
+                document.getElementById('clientName').innerText = name;
+                document.getElementById('signInForm').classList.remove('active');
+                document.getElementById('clientContent').classList.add('active');
+                // Load client notes and other data here
+            } else {
+                alert('Error logging in');
+            }
+        }
+    </script>
+</body>
+</html>
