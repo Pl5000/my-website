@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Actio - Fitness Website</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Actio Fitness</h1>
+        <nav>
+            <ul>
+                <li><a href="#home" class="tab-link active" onclick="openTab(event, 'home')">Home</a></li>
+                <li><a href="#about" class="tab-link" onclick="openTab(event, 'about')">About</a></li>
+                <li><a href="#services" class="tab-link" onclick="openTab(event, 'services')">Services</a></li>
+                <li><a href="#classes" class="tab-link" onclick="openTab(event, 'classes')">Classes</a></li>
+                <li><a href="#contact" class="tab-link" onclick="openTab(event, 'contact')">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+    
+    <main>
+        <section id="home" class="tab-content active">
+            <h2>Welcome to Actio Fitness</h2>
+            <p>Your journey to a healthier life starts here!</p>
+        </section>
+
+        <section id="about" class="tab-content">
+            <h2>About Us</h2>
+            <p>Actio Fitness is dedicated to helping you achieve your fitness goals.</p>
+        </section>
+
+        <section id="services" class="tab-content">
+            <h2>Our Services</h2>
+            <p>We offer a wide range of services to meet your fitness needs.</p>
+        </section>
+
+        <section id="classes" class="tab-content">
+            <h2>Our Classes</h2>
+            <p>Join our fitness classes and get fit together.</p>
+        </section>
+
+        <section id="contact" class="tab-content">
+            <h2>Contact Us</h2>
+            <p>Get in touch with us for any queries or to start your fitness journey.</p>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Actio Fitness. All rights reserved.</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
